@@ -1,4 +1,4 @@
-class ClassAttention(keras.Layer):
+class ClassAttention(keras.layers.Layer):
     def __init__(self, dim, num_heads=8, qkv_bias=False, qk_scale=None, attn_drop=0., proj_drop=0.):
         super(ClassAttention, self).__init__()
         self.num_heads = num_heads 
@@ -10,25 +10,28 @@ class ClassAttention(keras.Layer):
         self.proj_drop = Dropout(proj_drop)
         
         head_dim = dim // num_heads 
-        self.q = Dense(dim, bias=qkv_bias)
-        self.k = Dense(dim, bias=qkv_bias)
-        self.v = Dense(dim, bias=qkv_bias)
+        self.scale = qk_scale or head_dim ** -0.5
+        self.q = Dense(dim, use_bias=qkv_bias)
+        self.k = Dense(dim, use_bias=qkv_bias)
+        self.v = Dense(dim, use_bias=qkv_bias)
         self.proj = Dense(dim)
     
-    def call(self, x, training=True):
+    def call(self, x, training):
         B, N, C = x.shape 
         
-        # query vector
+        # creating a query matrices using the query weights and input
         q = tf.expand_dims(self.q(x[:, 0]), axis=1)
-        q = tf.reshape(k, (B, 1, self.num_heads, C // self.num_heads))
+        q = tf.reshape(q, (B, 1, self.num_heads, C // self.num_heads))
         q = tf.transpose(q, perm=[0, 2, 1, 3])
+        scale = tf.cast(self.scale, dtype=q.dtype)
+        q = q * scale
         
-        # key vector
+        # creating a key matrices using the key weights and input
         k = self.k(x)
         k = tf.reshape(k, (B, N, self.num_heads, C // self.num_heads))
         k = tf.transpose(k, perm=[0, 2, 1, 3])
         
-        #value vector
+        # creating a value matrices using the value weights and input
         v = self.v(x)
         v = tf.reshape(v, (B, N, self.num_heads, C // self.num_heads))
         v = tf.transpose(v, perm=[0, 2, 1, 3])
@@ -40,7 +43,7 @@ class ClassAttention(keras.Layer):
         
         x_cls = tf.matmul(attn, v)
         x_cls = tf.transpose(x_cls, perm=[0, 2, 1, 3])
-        x_cls = tf.reshape(x_cls, (batch_size, 1, num_channels))
+        x_cls = tf.reshape(x_cls, (B, 1, C))
         x_cls = self.proj(x_cls)
         x_cls = self.proj_drop(x_cls, training)
         
