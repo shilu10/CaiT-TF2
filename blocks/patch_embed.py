@@ -5,7 +5,7 @@ from tensorflow.keras.layers import *
 
 
 
-class PatchEmbed(keras.layers.Layer):
+class PatchEmbed(keras.Model):
     """ Image to Patch Embedding
     Args:
         img_size (int): Image size.  Default: 224.
@@ -29,18 +29,19 @@ class PatchEmbed(keras.layers.Layer):
 
         self.proj = Conv2D(filters=embed_dim,
                            kernel_size=patch_size,
-                           strides=patch_size
+                           strides=patch_size,
+                           name='patch_embed_projection'
                           )
         if norm_layer is not None:
             self.norm = norm_layer(epsilon=1e-5, name='norm')
         else:
             self.norm = None
-            
+
     def call(self, x):
         B, H, W, C = tf.shape(x)[0], tf.shape(x)[1], tf.shape(x)[2], tf.shape(x)[3]
-      
+
         x = self.proj(x)
         x = tf.reshape(x, shape=[-1, (H // self.patch_size[0]) * (W // self.patch_size[0]), self.embed_dim])
         if self.norm is not None:
             x = self.norm(x)
-        return x  
+        return x
