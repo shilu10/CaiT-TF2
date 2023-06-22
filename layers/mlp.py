@@ -1,14 +1,14 @@
-from tensorflow import keras 
-import tensorflow as tf 
-import numpy as np 
-from tensorflow.keras import Model 
-from tensorflow.keras.layers import Layer 
+from tensorflow import keras
+import tensorflow as tf
+import numpy as np
+from tensorflow.keras import Model
+from tensorflow.keras.layers import Layer
 from tensorflow.keras.layers import *
 
 
 class MLP(tf.keras.layers.Layer):
     """
-        this class is a implementation of the mlp block described in the swin transformer paper, which contains 
+        this class is a implementation of the mlp block described in the swin transformer paper, which contains
         2 fully connected layer with GelU activation.
     """
     def __init__(self, in_features, hidden_features=None, out_features=None, drop=0.):
@@ -26,8 +26,8 @@ class MLP(tf.keras.layers.Layer):
         super(MLP, self).__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
-        self.fc1 = Dense(hidden_features, name=f'mlp/fc1')
-        self.fc2 = Dense(out_features, name=f'mlp/fc2')
+        self.fc1 = Dense(hidden_features, name=f'mlp/fc1', bias_initializer=keras.initializers.RandomNormal(stddev=1e-6))
+        self.fc2 = Dense(out_features, name=f'mlp/fc2', bias_initializer=keras.initializers.RandomNormal(stddev=1e-6))
         self.drop = Dropout(drop)
 
     def call(self, x):
@@ -37,8 +37,3 @@ class MLP(tf.keras.layers.Layer):
         x = self.fc2(x)
         x = self.drop(x)
         return x
-
-    def summary(self): 
-        inputs = Input(shape=self.input_dims)
-        return keras.Model(inputs=inputs, outputs=self.call(inputs))
-
