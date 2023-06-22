@@ -39,6 +39,14 @@ def port(model_type="cait_xxs24_224",
                 init_values = init_values,
                 return_logits = return_logits
               )
+
+  dummy_inputs = tf.ones((2, args.image_size, args.image_size, 3))
+  _ = tf_model(dummy_inputs)
+  
+  if not return_logits:
+        assert tf_model.count_params() == sum(
+            p.numel() for p in pt_model.parameters()
+        )
   
   # getting the weights from pytorch model and creating the dict.
   # dict key is layername and value is params
@@ -67,13 +75,14 @@ def port(model_type="cait_xxs24_224",
       )
 
   # Classification Head layers.
-  head_layer = tf_model.get_layer("classification_head")
-  head_layer_idx = -1
-  tf_model.layers[head_layer_idx] = modify_tf_block(
-            head_layer,
-            pt_model_dict["head.weight"],
-            pt_model_dict["head.bias"],
-        )
+  if not return_logits:
+    head_layer = tf_model.get_layer("classification_head")
+    head_layer_idx = -1
+    tf_model.layers[head_layer_idx] = modify_tf_block(
+              head_layer,
+              pt_model_dict["head.weight"],
+              pt_model_dict["head.bias"],
+          )
 
   # for self attention transformer block (layer scale block)
 
@@ -403,3 +412,14 @@ def port(model_type="cait_xxs24_224",
 
         print(f"{pt_block_name}.attn.proj.weight")
         print(f"{pt_block_name}.attn.proj.bias")  
+
+  print("Porting Weights Successfull")
+
+  save_dir = "models/"
+  
+  if not os.path.exists(save_dir):
+    os.mkdir(save_dir)
+  
+  save_name = model_name + "_fe" if return_logits else model_name
+
+  tf_model.save(save_dir + save_name)
