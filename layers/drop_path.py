@@ -6,14 +6,19 @@ def drop_path(inputs, drop_prob, is_training):
     keep_prob = 1.0 - drop_prob
 
     # Compute drop_connect tensor
-    random_tensor = keep_prob
-    shape = (tf.shape(inputs)[0],) + (1,) * \
-        (len(tf.shape(inputs)) - 1)
-    random_tensor += tf.random.uniform(shape, dtype=inputs.dtype)
-    binary_tensor = tf.floor(random_tensor)
-    output = tf.math.divide(inputs, keep_prob) * binary_tensor
-    return output
-
+    #random_tensor = keep_prob
+    #shape = (tf.shape(inputs)[0],) + (1,) * \
+    #    (len(tf.shape(inputs)) - 1)
+    #random_tensor += tf.random.uniform(shape, dtype=inputs.dtype)
+    #binary_tensor = tf.floor(random_tensor)
+    #output = tf.math.divide(inputs, keep_prob) * binary_tensor
+    
+    #return output
+    keep_prob = 1 - self.drop_prob
+    shape = (tf.shape(x)[0],) + (1,) * (len(tf.shape(x)) - 1)
+    random_tensor = keep_prob + tf.random.uniform(shape, 0, 1)
+    random_tensor = tf.floor(random_tensor)
+    return (x / keep_prob) * random_tensor
 
 class DropPath(tf.keras.layers.Layer):
     def __init__(self, drop_prob=None):
@@ -21,4 +26,4 @@ class DropPath(tf.keras.layers.Layer):
         self.drop_prob = drop_prob
 
     def call(self, x, training=None):
-        return drop_path(x, self.drop_prob, training) 
+        return drop_path(x, self.drop_prob, training)
