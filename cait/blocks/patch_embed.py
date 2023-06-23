@@ -17,11 +17,12 @@ class PatchEmbed(keras.Model):
         super().__init__()
         self.img_size = (img_size)
         self.patch_size = (patch_size)
+        print(img_size, patch_size)
         patches_resolution = [img_size[0] // patch_size[0], img_size[1] // patch_size[1]]
-        self.img_size = img_size
-        self.patch_size = patch_size
+        print(patches_resolution)
         self.patches_resolution = patches_resolution
         self.num_patches = patches_resolution[0] * patches_resolution[1]
+        print(self.num_patches)
 
         self.in_chans = in_chans
         self.embed_dim = embed_dim
