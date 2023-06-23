@@ -429,6 +429,6 @@ def port_weights(model_type="cait_xxs24_224",
   if not os.path.exists(save_dir):
     os.mkdir(save_dir)
   
-  save_name = model_name + "_fe" if return_logits else model_name
+  save_name = model_type + "_fe" if return_logits else model_type
 
   tf_model.save(save_dir + save_name)
