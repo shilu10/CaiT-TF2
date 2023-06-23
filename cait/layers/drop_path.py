@@ -1,3 +1,7 @@
+from tensorflow import keras 
+import tensorflow as tf 
+
+
 def drop_path(inputs, drop_prob, is_training):
     if (not is_training) or (drop_prob == 0.):
         return inputs
@@ -19,6 +23,7 @@ def drop_path(inputs, drop_prob, is_training):
     random_tensor = keep_prob + tf.random.uniform(shape, 0, 1)
     random_tensor = tf.floor(random_tensor)
     return (x / keep_prob) * random_tensor
+
 
 class DropPath(tf.keras.layers.Layer):
     def __init__(self, drop_prob=None):

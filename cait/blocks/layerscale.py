@@ -1,3 +1,9 @@
+import tensorflow as tf 
+from tensorflow import keras
+from tensorflow.keras.layers import LayerNormalization, Dense, Conv2D, Dropout, Add, add
+from cait import DropPath, Attention_Talking_Head, MLP
+from tensorflow.keras import layers 
+
 class LayerScale_Block(keras.Model):
     def __init__(self,
                  dim,
@@ -51,6 +57,6 @@ class LayerScale_Block(keras.Model):
         if self.drop_path:
             x4 = self.drop_path(x4)
 
-        outputs = layers.Add()([x2, x4])
+        outputs = Add()([x2, x4])
 
         return outputs, attn_score
