@@ -1,14 +1,16 @@
 import timm 
-from cait.layers.class_attention import ClassAttention
-from cait.layers.mlp import MLP 
-from cait.layers.drop_path import DropPath
-from cait.layers.attn_talking_head import Attention_Talking_Head
+from .cait.layers.class_attention import ClassAttention
+from .cait.layers.mlp import MLP 
+from .cait.layers.drop_path import DropPath
+from .cait.layers.attn_talking_head import Attention_Talking_Head
 
-from cait.blocks.layerscale import LayerScale_Block
-from cait.blocks.layerscale_ca import LayerScale_Block_CA
-from cait.blocks.patch_embed import PatchEmbed
+from .cait.blocks.layerscale import LayerScale_Block
+from .cait.blocks.layerscale_ca import LayerScale_Block_CA
+from .cait.blocks.patch_embed import PatchEmbed
 
-from utils import modify_tf_block
+from .cait.model import CaiT
+
+from .utils import modify_tf_block
 import tensorflow as tf 
 from tensorflow import keras 
 from tensorflow.keras import * 
@@ -38,7 +40,7 @@ def port(model_type="cait_xxs24_224",
   print("Initializing the Tensorflow Model!!!")
 
   tf_model = CaiT(
-                patch_resolution = pow((image_size // patch_size), 2)
+                patch_resolution = pow((image_size // patch_size), 2),
                 img_shape = image_size,
                 patch_size = patch_size,
                 n_self_attention = n_self_attention_layers,
@@ -47,7 +49,7 @@ def port(model_type="cait_xxs24_224",
                 return_logits = return_logits
               )
 
-  dummy_inputs = tf.ones((2, args.image_size, args.image_size, 3))
+  dummy_inputs = tf.ones((2, image_size, image_size, 3))
   _ = tf_model(dummy_inputs)
   
   if not return_logits:
