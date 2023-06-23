@@ -1,7 +1,13 @@
 import timm 
-from cait import MLP, ClassAttention, Attention_Talking_Head
-from cait import PatchEmbed, LayerScale_Block, LayerScale_Block_CA
-from cait import CaiT
+from cait.layers.class_attention import ClassAttention
+from cait.layers.mlp import MLP 
+from cait.layers.drop_path import DropPath
+from cait.layers.attn_talking_head import Attention_Talking_Head
+
+from cait.blocks.layerscale import LayerScale_Block
+from cait.blocks.layerscale_ca import LayerScale_Block_CA
+from cait.blocks.patch_embed import PatchEmbed
+
 from utils import modify_tf_block
 import tensorflow as tf 
 from tensorflow import keras 
