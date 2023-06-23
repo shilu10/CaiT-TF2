@@ -95,7 +95,7 @@ def port_weights(model_type="cait_xxs24_224",
 
   # for self attention transformer block (layer scale block)
 
-  all_layers = [layer.name for layer in tf_model1.layers]
+  all_layers = [layer.name for layer in tf_model.layers]
   all_self_attention_transformerb = list(filter(lambda x: "self_attention_transformerb" in x, all_layers))
 
 
@@ -104,7 +104,7 @@ def port_weights(model_type="cait_xxs24_224",
 
     # assign weights to gamma_1, gamma_2 (layerscale) for each block.
     pt_block_name = f'blocks.{indx}'
-    current_block = tf_model1.get_layer(layer_name)
+    current_block = tf_model.get_layer(layer_name)
 
     prev_gamma_1 = np.ravel(current_block.gamma_1)
     prev_gamma_2 = np.ravel(current_block.gamma_2)
@@ -113,8 +113,8 @@ def port_weights(model_type="cait_xxs24_224",
     #current_block.gamma_1.assign(pt_model_dict[f"{pt_block_name}.gamma_1"])
     #current_block.gamma_2.assign(pt_model_dict[f"{pt_block_name}.gamma_2"])
 
-    tf_model1.get_layer(layer_name).gamma_1.assign(pt_model_dict[f"{pt_block_name}.gamma_1"])
-    tf_model1.get_layer(layer_name).gamma_2.assign(pt_model_dict[f"{pt_block_name}.gamma_2"])
+    tf_model.get_layer(layer_name).gamma_1.assign(pt_model_dict[f"{pt_block_name}.gamma_1"])
+    tf_model.get_layer(layer_name).gamma_2.assign(pt_model_dict[f"{pt_block_name}.gamma_2"])
 
     print(f"{pt_block_name}.gamma_1")
     print(f"{pt_block_name}.gamma_2")
@@ -136,8 +136,8 @@ def port_weights(model_type="cait_xxs24_224",
         #layer.gamma.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.weight"]))
         #layer.beta.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.bias"]))
 
-        tf_model1.get_layer(layer_name).get_layer(layer.name).gamma.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.weight"]))
-        tf_model1.get_layer(layer_name).get_layer(layer.name).beta.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.bias"]))
+        tf_model.get_layer(layer_name).get_layer(layer.name).gamma.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.weight"]))
+        tf_model.get_layer(layer_name).get_layer(layer.name).beta.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.bias"]))
 
         print(f"{pt_block_name}.norm{n_norm}.weight")
         print(f"{pt_block_name}.norm{n_norm}.bias")
@@ -158,7 +158,7 @@ def port_weights(model_type="cait_xxs24_224",
         prev_k1 = np.ravel(layer.fc2.kernel)
         prev_b1 = np.ravel(layer.fc2.bias)
 
-        tf_model1.get_layer(layer_name).get_layer(layer.name).fc1=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).fc1=modify_tf_block(
             layer.fc1,
             pt_model_dict[f"{pt_block_name}.mlp.fc1.weight"],
             pt_model_dict[f"{pt_block_name}.mlp.fc1.bias"])
@@ -166,7 +166,7 @@ def port_weights(model_type="cait_xxs24_224",
         print(f"{pt_block_name}.mlp.fc1.weight")
         print(f"{pt_block_name}.mlp.fc1.bias")
 
-        tf_model1.get_layer(layer_name).get_layer(layer.name).fc2= modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).fc2= modify_tf_block(
             layer.fc2,
             pt_model_dict[f"{pt_block_name}.mlp.fc2.weight"],
             pt_model_dict[f"{pt_block_name}.mlp.fc2.bias"])
@@ -191,7 +191,7 @@ def port_weights(model_type="cait_xxs24_224",
         # qkv weight matrix in attention talking head
         prev_k = np.ravel(layer.qkv.kernel)
         prev_b = np.ravel(layer.qkv.bias)
-        tf_model1.get_layer(layer_name).get_layer(layer.name).qkv=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).qkv=modify_tf_block(
             layer.qkv,
             pt_model_dict[f"{pt_block_name}.attn.qkv.weight"],
             pt_model_dict[f"{pt_block_name}.attn.qkv.bias"])
@@ -210,7 +210,7 @@ def port_weights(model_type="cait_xxs24_224",
         prev_k = np.ravel(layer.proj_l.kernel)
         prev_b = np.ravel(layer.proj_l.bias)
 
-        tf_model1.get_layer(layer_name).get_layer(layer.name).proj_l=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).proj_l=modify_tf_block(
             layer.proj_l,
             pt_model_dict[f"{pt_block_name}.attn.proj_l.weight"],
             pt_model_dict[f"{pt_block_name}.attn.proj_l.bias"])
@@ -228,7 +228,7 @@ def port_weights(model_type="cait_xxs24_224",
         # projection w in attention talking head
         prev_k = np.ravel(layer.proj_w.kernel)
         prev_b = np.ravel(layer.proj_w.bias)
-        tf_model1.get_layer(layer_name).get_layer(layer.name).proj_w=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).proj_w=modify_tf_block(
             layer.proj_w,
             pt_model_dict[f"{pt_block_name}.attn.proj_w.weight"],
             pt_model_dict[f"{pt_block_name}.attn.proj_w.bias"])
@@ -245,7 +245,7 @@ def port_weights(model_type="cait_xxs24_224",
         # projection final in attention talking head
         prev_k = np.ravel(layer.proj.kernel)
         prev_b = np.ravel(layer.proj.bias)
-        tf_model1.get_layer(layer_name).get_layer(layer.name).proj=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).proj=modify_tf_block(
             layer.proj,
             pt_model_dict[f"{pt_block_name}.attn.proj.weight"],
             pt_model_dict[f"{pt_block_name}.attn.proj.bias"])
@@ -260,7 +260,7 @@ def port_weights(model_type="cait_xxs24_224",
 
 
   # for class attention transformer block (layer scale block)
-  all_layers = [layer.name for layer in tf_model1.layers]
+  all_layers = [layer.name for layer in tf_model.layers]
   all_cls_attention_transformerb = list(filter(lambda x: "class_attention" in x, all_layers))
 
   print(all_cls_attention_transformerb)
@@ -269,7 +269,7 @@ def port_weights(model_type="cait_xxs24_224",
 
     # assign weights to gamma_1, gamma_2 (layerscale) for each block.
     pt_block_name = f'blocks_token_only.{indx}'
-    current_block = tf_model1.get_layer(layer_name)
+    current_block = tf_model.get_layer(layer_name)
 
     prev_gamma_1 = np.ravel(current_block.gamma_1)
     prev_gamma_2 = np.ravel(current_block.gamma_2)
@@ -277,8 +277,8 @@ def port_weights(model_type="cait_xxs24_224",
     #current_block.gamma_1.assign(pt_model_dict[f"{pt_block_name}.gamma_1"])
     #current_block.gamma_2.assign(pt_model_dict[f"{pt_block_name}.gamma_2"])
 
-    tf_model1.get_layer(layer_name).gamma_1.assign(pt_model_dict[f"{pt_block_name}.gamma_1"])
-    tf_model1.get_layer(layer_name).gamma_2.assign(pt_model_dict[f"{pt_block_name}.gamma_2"])
+    tf_model.get_layer(layer_name).gamma_1.assign(pt_model_dict[f"{pt_block_name}.gamma_1"])
+    tf_model.get_layer(layer_name).gamma_2.assign(pt_model_dict[f"{pt_block_name}.gamma_2"])
 
     if np.all(prev_gamma_1 == np.ravel(current_block.gamma_1)):
       print("gamma_1 is not changed")
@@ -301,8 +301,8 @@ def port_weights(model_type="cait_xxs24_224",
       # layer.gamma.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.weight"]))
         #layer.beta.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.bias"]))
 
-        tf_model1.get_layer(layer_name).get_layer(layer.name).gamma.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.weight"]))
-        tf_model1.get_layer(layer_name).get_layer(layer.name).beta.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.bias"]))
+        tf_model.get_layer(layer_name).get_layer(layer.name).gamma.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.weight"]))
+        tf_model.get_layer(layer_name).get_layer(layer.name).beta.assign(tf.Variable(pt_model_dict[f"{pt_block_name}.norm{n_norm}.bias"]))
 
         if np.all(prev_alpha == np.ravel(layer.gamma)):
           print(f'norm{n_norm} alpha is not modified')
@@ -323,7 +323,7 @@ def port_weights(model_type="cait_xxs24_224",
         prev_k1 = np.ravel(layer.fc2.kernel)
         prev_b1 = np.ravel(layer.fc2.bias)
         
-        tf_model1.get_layer(layer_name).get_layer(layer.name).fc1=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).fc1=modify_tf_block(
             layer.fc1,
             pt_model_dict[f"{pt_block_name}.mlp.fc1.weight"],
             pt_model_dict[f"{pt_block_name}.mlp.fc1.bias"])
@@ -331,7 +331,7 @@ def port_weights(model_type="cait_xxs24_224",
         print(f"{pt_block_name}.mlp.fc1.weight")
         print(f"{pt_block_name}.mlp.fc1.bias")
 
-        tf_model1.get_layer(layer_name).get_layer(layer.name).fc2=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).fc2=modify_tf_block(
             layer.fc2,
             pt_model_dict[f"{pt_block_name}.mlp.fc2.weight"],
             pt_model_dict[f"{pt_block_name}.mlp.fc2.bias"])
@@ -357,7 +357,7 @@ def port_weights(model_type="cait_xxs24_224",
         prev_k = np.ravel(layer.q.kernel)
         prev_b = np.ravel(layer.q.bias)
 
-        tf_model1.get_layer(layer_name).get_layer(layer.name).q=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).q=modify_tf_block(
             layer.q,
             pt_model_dict[f"{pt_block_name}.attn.q.weight"],
             pt_model_dict[f"{pt_block_name}.attn.q.bias"])
@@ -374,7 +374,7 @@ def port_weights(model_type="cait_xxs24_224",
         # k weight matrix in class attention
         prev_k = np.ravel(layer.k.kernel)
         prev_b = np.ravel(layer.k.bias)
-        tf_model1.get_layer(layer_name).get_layer(layer.name).k=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).k=modify_tf_block(
             layer.k,
             pt_model_dict[f"{pt_block_name}.attn.k.weight"],
             pt_model_dict[f"{pt_block_name}.attn.k.bias"])
@@ -391,7 +391,7 @@ def port_weights(model_type="cait_xxs24_224",
         # v weight matrix in class attention
         prev_k = np.ravel(layer.v.kernel)
         prev_b = np.ravel(layer.v.bias)
-        tf_model1.get_layer(layer_name).get_layer(layer.name).v=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).v=modify_tf_block(
             layer.v,
             pt_model_dict[f"{pt_block_name}.attn.v.weight"],
             pt_model_dict[f"{pt_block_name}.attn.v.bias"])
@@ -408,7 +408,7 @@ def port_weights(model_type="cait_xxs24_224",
         # projection final in class attention
         prev_k = np.ravel(layer.proj.kernel)
         prev_b = np.ravel(layer.proj.bias)
-        tf_model1.get_layer(layer_name).get_layer(layer.name).proj=modify_tf_block(
+        tf_model.get_layer(layer_name).get_layer(layer.name).proj=modify_tf_block(
             layer.proj,
             pt_model_dict[f"{pt_block_name}.attn.proj.weight"],
             pt_model_dict[f"{pt_block_name}.attn.proj.bias"])
