@@ -2,8 +2,7 @@ from tensorflow import keras
 import tensorflow as tf 
 from tensorflow.keras import Model 
 from tensorflow.keras.layers import *
-
-
+from tensorflow.keras.layers import Conv2D, Dropout
 
 class PatchEmbed(keras.Model):
     """ Image to Patch Embedding

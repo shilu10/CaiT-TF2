@@ -1,3 +1,10 @@
+import tensorflow as tf 
+from tensorflow import keras 
+from tensorflow.keras.layers import * 
+from tensorflow.keras import layers 
+from cait import PatchEmbed, LayerScale_Block, LayerScale_Block_CA, CaiT, DropPath, ClassAttention, Attention_Talking_Head, MLP
+
+
 class CaiT(keras.Model):
     def __init__(self,
                  patch_resolution,

@@ -1,3 +1,10 @@
+from tensorflow import keras 
+import tensorflow as tf 
+from tensorflow.keras.layers import Dense, Input, UpSampling2D, Conv2DTranspose, Conv2D, add, Add,\
+                    Lambda, Concatenate, AveragePooling2D, BatchNormalization, GlobalAveragePooling2D, \
+                    Add, LayerNormalization, Activation, LeakyReLU, SeparableConv2D, Softmax, MaxPooling2D, Dropout
+
+
 class Attention_Talking_Head(keras.layers.Layer):
     def __init__(self,
                  dim,
