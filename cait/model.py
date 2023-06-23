@@ -10,7 +10,7 @@ from .layers.attn_talking_head import Attention_Talking_Head
 
 from .blocks.layerscale import LayerScale_Block
 from .blocks.layerscale_ca import LayerScale_Block_CA
-#from .blocks.patch_embed import PatchEmbed
+from .blocks.patch_embed import PatchEmbed
 
 class CaiT(keras.Model):
     def __init__(self,
@@ -38,11 +38,11 @@ class CaiT(keras.Model):
         print(img_shape, patch_size)
 
         # patch generator, for generating patch from image.
-       # self.patch_generator  = PatchEmbed(img_size=img_shape,
-        #                                   patch_size=patch_size,
-         #                                  in_chans=3,
-          #                                 embed_dim=dim,
-           #                             )
+        self.patch_generator  = PatchEmbed(img_size=img_shape,
+                                           patch_size=patch_size,
+                                           in_chans=3,
+                                           embed_dim=dim,
+                                        )
 
         # position embedding and class token for ca layerscale layer
         self.pos_embed = tf.Variable(tf.zeros((1, patch_resolution, dim)))

@@ -6,7 +6,7 @@ from .cait.layers.attn_talking_head import Attention_Talking_Head
 
 from .cait.blocks.layerscale import LayerScale_Block
 from .cait.blocks.layerscale_ca import LayerScale_Block_CA
-#from .cait.blocks.patch_embed import PatchEmbed
+from .cait.blocks.patch_embed import PatchEmbed
 
 from .cait.model import CaiT
 
