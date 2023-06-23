@@ -2,8 +2,15 @@ import tensorflow as tf
 from tensorflow import keras 
 from tensorflow.keras.layers import * 
 from tensorflow.keras import layers 
-from cait import PatchEmbed, LayerScale_Block, LayerScale_Block_CA, CaiT, DropPath, ClassAttention, Attention_Talking_Head, MLP
 
+from layers.class_attention import ClassAttention
+from layers.mlp import MLP 
+from layers.drop_path import DropPath
+from layers.attn_talking_head import Attention_Talking_Head
+
+from blocks.layerscale import LayerScale_Block
+from blocks.layerscale_ca import LayerScale_Block_CA
+from blocks.patch_embed import PatchEmbed
 
 class CaiT(keras.Model):
     def __init__(self,

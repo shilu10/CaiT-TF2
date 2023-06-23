@@ -1,8 +1,14 @@
+import sys
+sys.append("../layers/")
+
 import tensorflow as tf 
 from tensorflow import keras
 from tensorflow.keras.layers import LayerNormalization, Dense, Conv2D, Dropout, Add, add
-from cait import DropPath, Attention_Talking_Head, MLP
 from tensorflow.keras import layers 
+from attn_talking_head import Attention_Talking_Head
+from drop_path import DropPath
+from mlp import MLP
+
 
 class LayerScale_Block(keras.Model):
     def __init__(self,
