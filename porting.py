@@ -18,7 +18,7 @@ import numpy as np
 import os, shutil
 
 
-def port(model_type="cait_xxs24_224",
+def port_weights(model_type="cait_xxs24_224",
          image_size=224,
          n_self_attention_layers=24,
          projection_dims=192, 
@@ -41,8 +41,8 @@ def port(model_type="cait_xxs24_224",
 
   tf_model = CaiT(
                 patch_resolution = pow((image_size // patch_size), 2),
-                img_shape = image_size,
-                patch_size = patch_size,
+                img_shape = (image_size, image_size),
+                patch_size = (patch_size, patch_size),
                 n_self_attention = n_self_attention_layers,
                 num_heads = num_heads,
                 init_values = init_values,

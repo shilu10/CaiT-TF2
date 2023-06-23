@@ -1,4 +1,7 @@
 from typing import *
+import numpy as np 
+from tensorflow import keras 
+import tensorflow as tf 
 
 def conv_transpose(w: np.ndarray) -> np.ndarray:
     """Transpose the weights of a PT conv layer so that it's comaptible with TF."""
