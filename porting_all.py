@@ -12,7 +12,7 @@ def main():
 
     try:
         config_file_paths = paths.list_files("CaiT/configs/")
-
+        print(config_file_paths)
         for config_file_path in config_file_paths:
             # porting all model types from pytorch to tensorflow
 
