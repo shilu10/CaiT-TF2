@@ -11,7 +11,7 @@ from .porting import port_weights
 def main():
 
     try:
-        config_file_paths = paths.list_files("configs/")
+        config_file_paths = paths.list_files("CaiT/configs/")
 
         for config_file_path in config_file_paths:
             # porting all model types from pytorch to tensorflow
