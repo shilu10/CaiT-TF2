@@ -9,7 +9,7 @@ from .porting import port_weights
 # all config files 
 
 def main():
-    
+
     try:
         config_file_paths = paths.list_files("configs/")
 
@@ -34,7 +34,7 @@ def main():
             )    
 
     except Exception as err:
-        return 
+        return err
 
 
 
