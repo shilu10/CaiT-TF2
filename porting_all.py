@@ -15,15 +15,15 @@ def main():
 
         for config_file_path in config_file_paths:
             # porting all model types from pytorch to tensorflow
-            model_type = config_file_path.split("/")[2].split(".")[0]
-            print(f"Processing the  model type: {model_type}")
 
             # read from config file 
             with open(config_file_path, "r") as f:
                 data = yaml.safe_load(f)
 
+            print(f"Processing the  model type: {data.model_type}")
+
             port_weights(
-                model_type=model_type,
+                model_type=data.model_type,
                 image_size=data.get("image_size"),
                 n_self_attention_layers=data.get("n_self_attention_layers"),
                 projection_dims=data.get("projection_dims"),
