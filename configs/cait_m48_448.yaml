@@ -1,3 +1,4 @@
+model_type: cait_m48_448
 image_size: 448
 projection_dims: 768
 num_heads: 16

@@ -1,3 +1,4 @@
+model_type: cait_m36_384
 image_size: 384
 projection_dims: 768
 num_heads: 16

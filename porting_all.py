@@ -15,7 +15,7 @@ def main():
 
         for config_file_path in config_file_paths:
             # porting all model types from pytorch to tensorflow
-            model_type = config_file_path.split("/")[1].split(".")[1]
+            model_type = config_file_path.split("/")[2].split(".")[0]
             print(f"Processing the  model type: {model_type}")
 
             # read from config file 
