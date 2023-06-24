@@ -11,7 +11,7 @@ from .porting import port_weights
 def main():
 
     try:
-        config_file_paths = list(paths.list_files("CaiT/configs/"))
+        config_file_paths = list(paths.list_files("CaiT10/configs/"))
         print(config_file_paths)
         for config_file_path in config_file_paths:
             # porting all model types from pytorch to tensorflow
@@ -20,7 +20,8 @@ def main():
             with open(config_file_path, "r") as f:
                 data = yaml.safe_load(f)
 
-            print(f"Processing the  model type: {data.get("model_type")}")
+            model_type = data.get("model_type")
+            print(f"Processing the  model type: {model_type}")
 
             port_weights(
                 model_type=data.get("model_type"),

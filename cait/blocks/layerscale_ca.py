@@ -1,6 +1,6 @@
 import sys 
 # path 
-sys.path.append("CaiT/cait/layers/")
+sys.path.append("CaiT10/cait/layers/")
 
 import tensorflow as tf 
 from tensorflow import keras
