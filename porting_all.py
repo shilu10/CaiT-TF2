@@ -11,7 +11,7 @@ from .porting import port_weights
 def main():
 
     try:
-        config_file_paths = list(paths.list_files("CaiT10/configs/"))
+        config_file_paths = list(paths.list_files("CaiT11configs/"))
         print(config_file_paths)
         for config_file_path in config_file_paths:
             # porting all model types from pytorch to tensorflow
@@ -30,7 +30,8 @@ def main():
                 projection_dims=data.get("projection_dims"),
                 patch_size=16,
                 num_heads=data.get("num_heads"),
-                init_values=data.get("init_values"),
+                #init_values=data.get("init_values"),
+                init_values=1e-5,
                 return_logits=False
             )    
 
