@@ -20,10 +20,10 @@ def main():
             with open(config_file_path, "r") as f:
                 data = yaml.safe_load(f)
 
-            print(f"Processing the  model type: {data.get(model_type)}")
+            print(f"Processing the  model type: {data.get("model_type")}")
 
             port_weights(
-                model_type=data.get(model_type),
+                model_type=data.get("model_type"),
                 image_size=data.get("image_size"),
                 n_self_attention_layers=data.get("n_self_attention_layers"),
                 projection_dims=data.get("projection_dims"),
