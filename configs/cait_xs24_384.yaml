@@ -1,3 +1,4 @@
+model_type: cait_xs24_384
 image_size: 384
 projection_dims: 288
 num_heads: 6
