@@ -35,7 +35,6 @@ class CaiT(keras.Model):
                  **kwargs
             ):
         super(CaiT, self).__init__(**kwargs)
-        print(img_shape, patch_size)
 
         # patch generator, for generating patch from image.
         self.patch_generator  = PatchEmbed(img_size=img_shape,

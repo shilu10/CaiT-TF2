@@ -28,7 +28,7 @@ def port_weights(model_type="cait_xxs24_224",
          return_logits=False
       ):
   
-  print('Initialize the Pytorch model!!!')
+  print('Loading the Pytorch model!!!')
 
   pt_model = timm.create_model(
         model_name=model_type,
@@ -53,14 +53,11 @@ def port_weights(model_type="cait_xxs24_224",
   dummy_inputs = tf.ones((2, image_size, image_size, 3))
   _ = tf_model(dummy_inputs)
   
-  print(tf_model.count_params())
-  print(sum(
+
+  if not return_logits:
+        assert tf_model.count_params() == sum(
             p.numel() for p in pt_model.parameters()
-        ))
- # if not return_logits:
-  #      assert tf_model.count_params() == sum(
-   #         p.numel() for p in pt_model.parameters()
-    #    )
+        )
   
   # getting the weights from pytorch model and creating the dict.
   # dict key is layername and value is params
@@ -427,7 +424,7 @@ def port_weights(model_type="cait_xxs24_224",
         print(f"{pt_block_name}.attn.proj.weight")
         print(f"{pt_block_name}.attn.proj.bias")  
 
-  print("Porting Weights Successfull")
+  print("Ported the Weights Successfull")
 
   save_dir = "models/"
   
@@ -437,3 +434,5 @@ def port_weights(model_type="cait_xxs24_224",
   save_name = model_type + "_fe" if return_logits else model_type
 
   tf_model.save(save_dir + save_name)
+
+  print("Model saved successfully.")
