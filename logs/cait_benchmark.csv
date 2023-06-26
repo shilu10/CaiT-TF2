@@ -1,0 +1,10 @@
+model_variant, top1_accuracy, top5_accuracy
+cait_xxs24_224, 82.5, 95.0
+cait_xxs36_224, 84.5, 96.1
+cait_s24_224, 89.8, 98.4
+cait_xxs24_384, 85.5, 96.5
+cait_xxs36_384, 86.2, 97.5
+cait_s24_384, 91.3, 98.6
+cait_s36_384, 91.3, 98.6
+cait_s36_384, 91.3, 98.7
+cait_m36_384, 92.9, 99.4
