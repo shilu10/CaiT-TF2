@@ -1,0 +1,2 @@
+model_variant, top1_accuracy, top5_accuracy
+cait_s24_224, 89.8, 98.4

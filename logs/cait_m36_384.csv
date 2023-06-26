@@ -1,0 +1,2 @@
+model_variant, top1_accuracy, top5_accuracy
+cait_m36_384, 92.9, 99.4
